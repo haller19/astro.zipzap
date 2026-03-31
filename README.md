@@ -1,6 +1,6 @@
 # ZiPZAP Portfolio — Astro + Vercel
 
-WordPress大好き人間 / ZiPZAP のポートフォリオサイトです。
+ZiPZAP のポートフォリオサイトです。
 
 ## 技術スタック
 

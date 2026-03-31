@@ -13,7 +13,7 @@ const navLinks = [
   { href: '/about', label: 'About' },
   { href: '/skills', label: 'Skills' },
   { href: '/works', label: 'Works' },
-  { href: '/contact', label: 'Contact' },
+  //{ href: '/contact', label: 'Contact' },
 ];
 ---
 <!DOCTYPE html>
@@ -58,7 +58,7 @@ const navLinks = [
     </div>
   </header>
 
-  <main>
+  <main class="main">
     <slot />
   </main>
 
@@ -145,7 +145,6 @@ const navLinks = [
   padding: 10px 0;
   border-bottom: 1px solid #E8E7E2;
 }
-
 .site-footer {
   margin-top: 80px;
   border-top: 1px solid #E8E7E2;
