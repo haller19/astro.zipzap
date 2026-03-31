@@ -6,4 +6,5 @@ dist
 src/env.d.ts
 .env
 .DS_Store
+/public/contact-config.php
 

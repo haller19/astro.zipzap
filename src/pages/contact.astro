@@ -1,7 +1,15 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const RECAPTCHA_SITE_KEY = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
 ---
 <Layout title="Contact — ZiPZAP" description="ZiPZAPへのお問い合わせ。Web制作・リニューアル・SEO・WordPress運用改善のご相談はこちらから。">
+  <!-- reCAPTCHA v3 スクリプト読み込み -->
+  <script
+    src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`}
+    is:inline
+  ></script>
+
   <div class="container page-wrap">
     <header class="page-header">
       <p class="section-label">Contact</p>
@@ -19,6 +27,7 @@ import Layout from '../layouts/Layout.astro';
           <div class="field">
             <label class="label" for="name">お名前 <span class="req">*</span></label>
             <input class="input" type="text" id="name" name="name" placeholder="例：山田 太郎" required />
+            <span class="field-error" id="err-name"></span>
           </div>
           <div class="field">
             <label class="label" for="company">会社名・屋号</label>
@@ -27,6 +36,7 @@ import Layout from '../layouts/Layout.astro';
           <div class="field">
             <label class="label" for="email">メールアドレス <span class="req">*</span></label>
             <input class="input" type="email" id="email" name="email" placeholder="example@email.com" required />
+            <span class="field-error" id="err-email"></span>
           </div>
           <div class="field">
             <label class="label" for="subject">ご相談の種類</label>
@@ -41,26 +51,39 @@ import Layout from '../layouts/Layout.astro';
           </div>
           <div class="field">
             <label class="label" for="message">ご相談内容 <span class="req">*</span></label>
-            <textarea class="input textarea" id="message" name="message" rows="6" placeholder="ご相談の概要・現状の課題・ご予算感などをご記入ください" required></textarea>
+            <textarea
+              class="input textarea"
+              id="message"
+              name="message"
+              rows="6"
+              placeholder="ご相談の概要・現状の課題・ご予算感などをご記入ください"
+              required
+            ></textarea>
+            <span class="field-error" id="err-message"></span>
           </div>
 
-          <div class="form-note">
-            ※ このフォームはデモ用です。実際の送信機能はVercelにデプロイ後、Netlify FormsやResendなどと連携して実装できます。
-          </div>
+          <p class="recaptcha-note">
+            このフォームはGoogle reCAPTCHA v3で保護されています。<br>
+            <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">プライバシーポリシー</a>・
+            <a href="https://policies.google.com/terms" target="_blank" rel="noopener">利用規約</a>が適用されます。
+          </p>
+
+          <div class="alert alert--error" id="formError" style="display:none"></div>
 
           <button type="submit" class="btn btn--primary submit-btn" id="submitBtn">
-            送信する →
+            <span id="btnText">送信する</span>
+            <span id="btnSpinner" class="spinner" style="display:none"></span>
           </button>
         </form>
 
         <div class="success-msg" id="successMsg" style="display:none">
           <div class="success-icon">✓</div>
           <h3>送信完了しました！</h3>
-          <p>お問い合わせありがとうございます。2営業日以内にご返信いたします。</p>
+          <p>お問い合わせありがとうございます。<br>2営業日以内にご返信いたします。</p>
         </div>
       </div>
 
-      <!-- Sidebar info -->
+      <!-- Sidebar -->
       <aside class="contact-info">
         <div class="info-block">
           <h3 class="info-title">よくあるご相談</h3>
@@ -77,7 +100,6 @@ import Layout from '../layouts/Layout.astro';
             ))}
           </ul>
         </div>
-
         <div class="info-block info-block--teal">
           <h3 class="info-title">得意なこと</h3>
           <div class="tag-cloud">
@@ -86,7 +108,6 @@ import Layout from '../layouts/Layout.astro';
             ))}
           </div>
         </div>
-
         <div class="coconala-note">
           <p class="coconala-label">ココナラでも活動中</p>
           <p class="coconala-handle">WordPress大好き人間</p>
@@ -97,19 +118,76 @@ import Layout from '../layouts/Layout.astro';
   </div>
 </Layout>
 
-<script>
-  const form = document.getElementById('contactForm') as HTMLFormElement;
-  const success = document.getElementById('successMsg') as HTMLElement;
-  const btn = document.getElementById('submitBtn') as HTMLButtonElement;
+<script define:vars={{ RECAPTCHA_SITE_KEY }}>
+  const form       = document.getElementById('contactForm');
+  const successMsg = document.getElementById('successMsg');
+  const submitBtn  = document.getElementById('submitBtn');
+  const btnText    = document.getElementById('btnText');
+  const btnSpinner = document.getElementById('btnSpinner');
+  const formError  = document.getElementById('formError');
 
-  form?.addEventListener('submit', (e) => {
+  function validateField(id, errorId, check, msg) {
+    const el  = document.getElementById(id);
+    const err = document.getElementById(errorId);
+    if (!check(el.value)) {
+      err.textContent = msg;
+      el.classList.add('input--error');
+      return false;
+    }
+    err.textContent = '';
+    el.classList.remove('input--error');
+    return true;
+  }
+
+  function validate() {
+    const v1 = validateField('name',    'err-name',    v => v.trim().length >= 1,   'お名前を入力してください。');
+    const v2 = validateField('email',   'err-email',   v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()), 'メールアドレスの形式が正しくありません。');
+    const v3 = validateField('message', 'err-message', v => v.trim().length >= 10,  'ご相談内容は10文字以上入力してください。');
+    return v1 && v2 && v3;
+  }
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    btn.textContent = '送信中...';
-    btn.disabled = true;
-    setTimeout(() => {
-      form.style.display = 'none';
-      success.style.display = 'flex';
-    }, 800);
+    formError.style.display = 'none';
+    if (!validate()) return;
+
+    submitBtn.disabled = true;
+    btnText.textContent = '送信中...';
+    btnSpinner.style.display = 'inline-block';
+
+    try {
+      // reCAPTCHA v3 トークン取得
+      const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'contact' });
+
+      const fd = new FormData(form);
+      fd.append('recaptcha_token', token);
+
+      const res  = await fetch('/contact.php', { method: 'POST', body: fd });
+      const data = await res.json();
+
+      if (data.success) {
+        form.style.display = 'none';
+        successMsg.style.display = 'flex';
+      } else {
+        throw new Error(data.message || '送信に失敗しました。');
+      }
+    } catch (err) {
+      formError.textContent = err.message || '通信エラーが発生しました。時間をおいて再度お試しください。';
+      formError.style.display = 'block';
+      submitBtn.disabled = false;
+      btnText.textContent = '送信する';
+      btnSpinner.style.display = 'none';
+    }
+  });
+
+  // blur 時にリアルタイムバリデーション
+  const rules = {
+    name:    [v => v.trim().length >= 1,   'お名前を入力してください。'],
+    email:   [v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()), 'メールアドレスの形式が正しくありません。'],
+    message: [v => v.trim().length >= 10,  'ご相談内容は10文字以上入力してください。'],
+  };
+  Object.entries(rules).forEach(([id, [check, msg]]) => {
+    document.getElementById(id)?.addEventListener('blur', () => validateField(id, 'err-' + id, check, msg));
   });
 </script>
 
@@ -125,8 +203,6 @@ import Layout from '../layouts/Layout.astro';
   gap: 56px;
   align-items: start;
 }
-
-/* Form */
 .form-wrap {
   background: var(--c-white);
   border: 1px solid #E8E7E2;
@@ -149,62 +225,47 @@ import Layout from '../layouts/Layout.astro';
   appearance: none;
 }
 .input:focus { outline: none; border-color: var(--c-teal); background: var(--c-white); }
+.input--error { border-color: #E05252; background: #FEF5F5; }
 .textarea { resize: vertical; min-height: 140px; line-height: 1.6; }
-.form-note { font-size: 12px; color: var(--c-ink-30); line-height: 1.6; }
-.submit-btn { align-self: flex-start; padding: 12px 32px; font-size: 15px; }
-
-.success-msg {
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 48px 24px;
-  gap: 12px;
+.field-error { font-size: 12px; color: #C0392B; min-height: 16px; }
+.alert { padding: 12px 16px; border-radius: var(--radius-sm); font-size: 14px; line-height: 1.55; }
+.alert--error { background: #FEF5F5; border: 1px solid #F5C6C6; color: #C0392B; }
+.recaptcha-note { font-size: 11px; color: var(--c-ink-30); line-height: 1.6; }
+.recaptcha-note a { color: var(--c-ink-60); text-decoration: underline; }
+.submit-btn { align-self: flex-start; padding: 12px 32px; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+.submit-btn:disabled { opacity: .6; cursor: not-allowed; }
+.spinner {
+  width: 14px; height: 14px;
+  border: 2px solid rgba(255,255,255,.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
 }
+@keyframes spin { to { transform: rotate(360deg); } }
+.success-msg { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 56px 24px; gap: 14px; }
 .success-icon {
-  width: 56px;
-  height: 56px;
+  width: 56px; height: 56px;
   border-radius: 50%;
   background: var(--c-teal-lt);
   color: var(--c-teal-dk);
-  font-size: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 26px;
+  display: flex; align-items: center; justify-content: center;
   font-weight: 500;
 }
 .success-msg h3 { font-size: 20px; font-weight: 500; }
-.success-msg p { font-size: 14px; color: var(--c-ink-60); }
-
-/* Sidebar */
+.success-msg p { font-size: 14px; color: var(--c-ink-60); line-height: 1.7; }
 .contact-info { display: flex; flex-direction: column; gap: 20px; }
-.info-block {
-  background: var(--c-white);
-  border: 1px solid #E8E7E2;
-  border-radius: var(--radius-lg);
-  padding: 24px;
-}
+.info-block { background: var(--c-white); border: 1px solid #E8E7E2; border-radius: var(--radius-lg); padding: 24px; }
 .info-block--teal { background: var(--c-teal-lt); border-color: transparent; }
-.info-title { font-size: 14px; font-weight: 500; color: var(--c-ink); margin-bottom: 14px; }
+.info-title { font-size: 14px; font-weight: 500; margin-bottom: 14px; }
 .info-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-.info-list li {
-  font-size: 13px;
-  color: var(--c-ink);
-  padding-left: 14px;
-  position: relative;
-  line-height: 1.5;
-}
+.info-list li { font-size: 13px; padding-left: 14px; position: relative; line-height: 1.5; }
 .info-list li::before { content: '▸'; position: absolute; left: 0; color: var(--c-teal); }
 .tag-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
-
-.coconala-note {
-  background: var(--c-ink);
-  border-radius: var(--radius-lg);
-  padding: 20px 24px;
-}
+.coconala-note { background: var(--c-ink); border-radius: var(--radius-lg); padding: 20px 24px; }
 .coconala-label { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--c-teal); font-family: var(--font-mono); margin-bottom: 6px; }
 .coconala-handle { font-size: 18px; font-weight: 500; color: var(--c-white); margin-bottom: 6px; }
 .coconala-desc { font-size: 12px; color: rgba(255,255,255,.5); line-height: 1.5; }
-
 @media (max-width: 768px) {
   .contact-grid { grid-template-columns: 1fr; }
   .form-wrap { padding: 24px; }
