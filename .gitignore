@@ -1,0 +1,9 @@
+/node_modules
+/.astro
+/.cache
+dist
+/public/build
+src/env.d.ts
+.env
+.DS_Store
+
