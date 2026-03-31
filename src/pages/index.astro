@@ -1,0 +1,257 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { works } from '../data/works.js';
+const featured = works.slice(0, 3);
+---
+<Layout>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-content">
+        <p class="section-label fade-up">Web Director / Webディレクター</p>
+        <h1 class="hero-title fade-up">
+          Planning,<br>
+          Production,<br>
+          <span class="hero-accent">Optimization.</span>
+        </h1>
+        <p class="hero-body fade-up">
+          構成設計から制作・公開後の改善支援まで、一貫して関わるジェネラリスト。<br>
+          事業成果を見据えたWebディレクション・運用改善が得意です。
+        </p>
+        <div class="hero-actions fade-up">
+          <a href="/works" class="btn btn--primary">実績を見る →</a>
+          <a href="/contact" class="btn btn--ghost">お問い合わせ</a>
+        </div>
+      </div>
+      <div class="hero-badge-wrap fade-up">
+        <div class="hero-badge">
+          <span class="badge-icon">🎯</span>
+          <div>
+            <div class="badge-num">15<span>+</span></div>
+            <div class="badge-lbl">Years of Experience</div>
+          </div>
+        </div>
+        <div class="hero-badge">
+          <span class="badge-icon">📈</span>
+          <div>
+            <div class="badge-num">2,000<span>万→2億</span></div>
+            <div class="badge-lbl">売上規模の事業支援実績</div>
+          </div>
+        </div>
+        <div class="hero-badge hero-badge--accent">
+          <span class="badge-icon">🔍</span>
+          <div>
+            <div class="badge-num">SEO <span>1位</span></div>
+            <div class="badge-lbl">検索上位獲得の実績あり</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Works -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-label">Works</p>
+        <h2 class="section-title">制作実績・ピックアップ</h2>
+      </div>
+      <div class="works-grid">
+        {featured.map((work) => (
+          <a href={`/works#${work.id}`} class="work-card">
+            <div class="work-card__tags">
+              {work.tags.slice(0, 2).map(tag => (
+                <span class="tag">{tag}</span>
+              ))}
+            </div>
+            <h3 class="work-card__title">{work.title}</h3>
+            <p class="work-card__period">{work.industry} · {work.period}</p>
+            <p class="work-card__summary">{work.summary}</p>
+            <ul class="work-card__highlights">
+              {work.highlights.slice(0, 2).map(h => (
+                <li>{h}</li>
+              ))}
+            </ul>
+            <span class="work-card__cta">詳しく見る →</span>
+          </a>
+        ))}
+      </div>
+      <div class="section-more">
+        <a href="/works" class="btn btn--ghost">すべての実績を見る</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills snapshot -->
+  <section class="section section--surface">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-label">Skills</p>
+        <h2 class="section-title">主なスキルセット</h2>
+      </div>
+      <div class="skills-grid">
+        {[
+          { name: 'WordPress', pct: 82, note: 'テーマ構築・カスタム投稿・運用前提設計' },
+          { name: 'HTML5 / CSS3 / SCSS', pct: 82, note: 'セマンティック設計・BEM・Bootstrap' },
+          { name: 'SEO / Webマーケティング', pct: 78, note: 'アクセス解析を起点にしたKPI設計・改善提案' },
+          { name: 'Photoshop / Illustrator', pct: 82, note: '合成レタッチ・ロゴ・印刷物対応' },
+          { name: 'Figma', pct: 40, note: 'UI設計・共有・レビュー前提のデザイン' },
+          { name: 'PHP / CakePHP / Smarty', pct: 60, note: 'DBを使用したWebシステム構築' },
+        ].map((s) => (
+          <div class="skill-row">
+            <div class="skill-meta">
+              <span class="skill-name">{s.name}</span>
+              <span class="skill-pct">{s.pct}%</span>
+            </div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar-fill" style={`width: ${s.pct}%`}></div>
+            </div>
+            <p class="skill-note">{s.note}</p>
+          </div>
+        ))}
+      </div>
+      <div class="section-more">
+        <a href="/skills" class="btn btn--ghost">スキル詳細を見る</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section cta-section">
+    <div class="container cta-inner">
+      <p class="section-label">Contact</p>
+      <h2 class="cta-title">お気軽にご相談ください</h2>
+      <p class="cta-body">Web制作・リニューアル・SEO・運用改善など、お気軽にどうぞ。<br>ヒアリングから丁寧に対応します。</p>
+      <a href="/contact" class="btn btn--primary">お問い合わせはこちら →</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+/* Hero */
+.hero {
+  padding: 80px 0 96px;
+  border-bottom: 1px solid #E8E7E2;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.hero-title {
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 300;
+  line-height: 1.12;
+  margin: 12px 0 20px;
+  letter-spacing: -.02em;
+  color: var(--c-ink);
+}
+.hero-accent { color: var(--c-teal); font-weight: 500; }
+.hero-body {
+  font-size: 15px;
+  color: var(--c-ink-60);
+  line-height: 1.75;
+  margin-bottom: 28px;
+}
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* Hero badges */
+.hero-badge-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.hero-badge {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--c-white);
+  border: 1px solid #E8E7E2;
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+}
+.hero-badge--accent { border-color: var(--c-teal-lt); background: var(--c-teal-lt); }
+.badge-icon { font-size: 24px; }
+.badge-num {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--c-ink);
+  line-height: 1;
+}
+.badge-num span { font-size: 14px; font-weight: 400; color: var(--c-teal); margin-left: 2px; }
+.badge-lbl { font-size: 12px; color: var(--c-ink-60); margin-top: 4px; }
+
+/* Sections */
+.section { padding: 80px 0; }
+.section--surface { background: var(--c-white); }
+.section-head { margin-bottom: 40px; }
+.section-title {
+  font-size: 28px;
+  font-weight: 500;
+  margin-top: 8px;
+  letter-spacing: -.01em;
+}
+.section-more { margin-top: 40px; text-align: center; }
+
+/* Works grid */
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.work-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--c-white);
+  border: 1px solid #E8E7E2;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  transition: border-color var(--transition), transform var(--transition);
+}
+.work-card:hover { border-color: var(--c-teal); transform: translateY(-2px); }
+.work-card__tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.work-card__title { font-size: 16px; font-weight: 500; color: var(--c-ink); }
+.work-card__period { font-size: 12px; color: var(--c-teal); font-family: var(--font-mono); }
+.work-card__summary { font-size: 13px; color: var(--c-ink-60); line-height: 1.6; flex: 1; }
+.work-card__highlights {
+  list-style: none;
+  font-size: 12px;
+  color: var(--c-ink);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.work-card__highlights li::before { content: '✓ '; color: var(--c-teal); font-weight: 500; }
+.work-card__cta { font-size: 13px; color: var(--c-teal); font-weight: 500; margin-top: 4px; }
+
+/* Skills */
+.skills-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 48px;
+}
+.skill-row { display: flex; flex-direction: column; gap: 6px; }
+.skill-meta { display: flex; justify-content: space-between; align-items: baseline; }
+.skill-name { font-size: 14px; font-weight: 500; color: var(--c-ink); }
+.skill-pct { font-size: 12px; color: var(--c-ink-60); font-family: var(--font-mono); }
+.skill-bar-bg { height: 5px; background: #EEEDE9; border-radius: 99px; overflow: hidden; }
+.skill-bar-fill { height: 100%; background: var(--c-teal); border-radius: 99px; }
+.skill-note { font-size: 12px; color: var(--c-ink-60); line-height: 1.5; }
+
+/* CTA */
+.cta-section { background: var(--c-ink); }
+.cta-inner { text-align: center; padding: 80px 0; }
+.cta-inner .section-label { color: var(--c-teal); }
+.cta-title { font-size: 32px; font-weight: 300; color: var(--c-white); margin: 12px 0 16px; }
+.cta-body { font-size: 15px; color: rgba(255,255,255,.6); line-height: 1.7; margin-bottom: 32px; }
+
+@media (max-width: 768px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+  .works-grid { grid-template-columns: 1fr; }
+  .skills-grid { grid-template-columns: 1fr; }
+  .hero-badge-wrap { flex-direction: row; flex-wrap: wrap; }
+  .hero-badge { flex: 1; min-width: 140px; }
+}
+</style>

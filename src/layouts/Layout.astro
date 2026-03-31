@@ -1,0 +1,171 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = 'ZiPZAP — Webディレクター・制作・運用改善',
+  description = 'Planning / Production / Optimization. 構成設計から制作・改善支援まで一貫して関わるWebディレクター。'
+} = Astro.props;
+const pathname = Astro.url.pathname;
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About' },
+  { href: '/skills', label: 'Skills' },
+  { href: '/works', label: 'Works' },
+  { href: '/contact', label: 'Contact' },
+];
+---
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <title>{title}</title>
+  <link rel="stylesheet" href="/src/styles/global.css" />
+  <!-- Favicon placeholder -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo">
+        <span class="logo-zip">ZiP</span><span class="logo-zap">ZAP</span>
+      </a>
+      <nav class="nav">
+        {navLinks.map(link => (
+          <a
+            href={link.href}
+            class={`nav-link ${pathname === link.href ? 'nav-link--active' : ''}`}
+          >
+            {link.label}
+          </a>
+        ))}
+        <a href="/contact" class="btn btn--primary nav-cta">お問い合わせ</a>
+      </nav>
+      <!-- Mobile menu toggle -->
+      <button class="hamburger" id="menuToggle" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <!-- Mobile nav -->
+    <div class="mobile-nav" id="mobileNav">
+      {navLinks.map(link => (
+        <a href={link.href} class="mobile-nav-link">{link.label}</a>
+      ))}
+    </div>
+  </header>
+
+  <main>
+    <slot />
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span class="logo"><span class="logo-zip">ZiP</span><span class="logo-zap">ZAP</span></span>
+      <p class="footer-copy">© 2024 ZiPZAP (WordPress大好き人間) — Webディレクター</p>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('menuToggle');
+    const nav = document.getElementById('mobileNav');
+    toggle?.addEventListener('click', () => {
+      nav?.classList.toggle('open');
+      toggle.classList.toggle('open');
+    });
+  </script>
+</body>
+</html>
+
+<style>
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(247,246,242,.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #E8E7E2;
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+.logo { font-size: 18px; font-weight: 500; letter-spacing: -.01em; }
+.logo-zip { color: var(--c-ink); }
+.logo-zap { color: var(--c-teal); }
+
+.nav { display: flex; align-items: center; gap: 4px; }
+.nav-link {
+  font-size: 14px;
+  color: var(--c-ink-60);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition);
+}
+.nav-link:hover, .nav-link--active { color: var(--c-ink); }
+.nav-cta { margin-left: 8px; padding: 8px 18px; font-size: 13px; }
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--c-ink);
+  border-radius: 2px;
+  transition: all .2s;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  padding: 12px 24px 16px;
+  border-top: 1px solid #E8E7E2;
+  gap: 4px;
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav-link {
+  font-size: 15px;
+  color: var(--c-ink);
+  padding: 10px 0;
+  border-bottom: 1px solid #E8E7E2;
+}
+
+.site-footer {
+  margin-top: 80px;
+  border-top: 1px solid #E8E7E2;
+  padding: 32px 0;
+}
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.footer-copy {
+  font-size: 13px;
+  color: var(--c-ink-60);
+}
+
+@media (max-width: 640px) {
+  .nav { display: none; }
+  .hamburger { display: flex; }
+  .footer-inner { flex-direction: column; align-items: flex-start; }
+}
+</style>

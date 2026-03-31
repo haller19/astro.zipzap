@@ -1,0 +1,27 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="404 — ZiPZAP">
+  <div class="container not-found">
+    <p class="code">404</p>
+    <h1>ページが見つかりません</h1>
+    <p class="desc">お探しのページは移動または削除された可能性があります。</p>
+    <a href="/" class="btn btn--primary">ホームへ戻る</a>
+  </div>
+</Layout>
+
+<style>
+.not-found {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 16px;
+  padding: 80px 24px;
+}
+.code { font-size: 96px; font-weight: 300; color: var(--c-teal); line-height: 1; }
+h1 { font-size: 24px; font-weight: 500; }
+.desc { font-size: 15px; color: var(--c-ink-60); }
+</style>

@@ -1,0 +1,235 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Skills — ZiPZAP" description="ZiPZAPのスキルセット。WordPress・HTML/CSS・SEO・Photoshopなどのスキルと使用ツール一覧。">
+  <div class="container page-wrap">
+    <header class="page-header">
+      <p class="section-label">Skills</p>
+      <h1 class="page-title">スキル・使用ツール</h1>
+      <p class="page-desc">
+        特定領域のスペシャリストというより、状況に応じて柔軟に動くジェネラリストタイプ。<br>
+        制作〜マーケティングまで、事業のデリバリー全体を見ながら価値提供します。
+      </p>
+    </header>
+
+    <!-- Skill categories -->
+    <div class="skill-categories">
+
+      <!-- Design / Visual -->
+      <div class="skill-cat">
+        <div class="skill-cat__head">
+          <span class="skill-cat__icon">🎨</span>
+          <h2 class="skill-cat__name">デザイン・ビジュアル</h2>
+        </div>
+        <div class="skill-items">
+          {[
+            { name: 'Photoshop', dots: 5, note: '合成レタッチ・写真補正、他者データの修正・再利用' },
+            { name: 'Illustrator', dots: 5, note: 'ロゴ・図版作成、印刷／Web双方のデータ理解' },
+            { name: 'Figma', dots: 2, note: 'UI設計、共有・レビュー前提のデザイン' },
+            { name: 'FinalCut Pro', dots: 2, note: '撮影・編集・書き出し' },
+          ].map(s => (
+            <div class="skill-item">
+              <div class="skill-item__top">
+                <span class="skill-item__name">{s.name}</span>
+                <span class="skill-item__dots">
+                  {[...Array(5)].map((_, i) => (
+                    <span class={`dot ${i < s.dots ? 'dot--on' : ''}`}></span>
+                  ))}
+                </span>
+              </div>
+              <p class="skill-item__note">{s.note}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Frontend -->
+      <div class="skill-cat">
+        <div class="skill-cat__head">
+          <span class="skill-cat__icon">💻</span>
+          <h2 class="skill-cat__name">フロントエンド</h2>
+        </div>
+        <div class="skill-items">
+          {[
+            { name: 'HTML5', dots: 5, note: 'セマンティック設計、実装と保守性の理解' },
+            { name: 'CSS3 / SCSS', dots: 5, note: 'レスポンシブ対応（Bootstrap）、BEM記述' },
+            { name: 'JavaScript', dots: 3, note: 'UI挙動の制御、既存コードの理解' },
+          ].map(s => (
+            <div class="skill-item">
+              <div class="skill-item__top">
+                <span class="skill-item__name">{s.name}</span>
+                <span class="skill-item__dots">
+                  {[...Array(5)].map((_, i) => (
+                    <span class={`dot ${i < s.dots ? 'dot--on' : ''}`}></span>
+                  ))}
+                </span>
+              </div>
+              <p class="skill-item__note">{s.note}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- CMS / Backend -->
+      <div class="skill-cat">
+        <div class="skill-cat__head">
+          <span class="skill-cat__icon">⚙️</span>
+          <h2 class="skill-cat__name">CMS・バックエンド</h2>
+        </div>
+        <div class="skill-items">
+          {[
+            { name: 'WordPress', dots: 5, note: 'テーマ構築・カスタム投稿・運用前提設計' },
+            { name: 'PHP / CakePHP / Smarty', dots: 3, note: 'DBを使用したWebシステム構築' },
+          ].map(s => (
+            <div class="skill-item">
+              <div class="skill-item__top">
+                <span class="skill-item__name">{s.name}</span>
+                <span class="skill-item__dots">
+                  {[...Array(5)].map((_, i) => (
+                    <span class={`dot ${i < s.dots ? 'dot--on' : ''}`}></span>
+                  ))}
+                </span>
+              </div>
+              <p class="skill-item__note">{s.note}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Analytics / Marketing -->
+      <div class="skill-cat">
+        <div class="skill-cat__head">
+          <span class="skill-cat__icon">📊</span>
+          <h2 class="skill-cat__name">解析・マーケティング</h2>
+        </div>
+        <div class="skill-items">
+          {[
+            { name: 'Google Analytics', dots: 5, note: 'アクセス解析を起点にしたKPI設計・改善提案' },
+            { name: 'Google Search Console', dots: 5, note: 'SEO内部施策・クロール管理' },
+            { name: 'Google Tag Manager', dots: 4, note: 'タグ管理・計測設計' },
+            { name: 'Ptengine（ヒートマップ）', dots: 4, note: '導線検証・CTA改善に活用' },
+          ].map(s => (
+            <div class="skill-item">
+              <div class="skill-item__top">
+                <span class="skill-item__name">{s.name}</span>
+                <span class="skill-item__dots">
+                  {[...Array(5)].map((_, i) => (
+                    <span class={`dot ${i < s.dots ? 'dot--on' : ''}`}></span>
+                  ))}
+                </span>
+              </div>
+              <p class="skill-item__note">{s.note}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Tech Stack -->
+    <section class="tech-stack">
+      <h2 class="sub-title">Tech Stack</h2>
+      <div class="stack-table">
+        {[
+          { label: '仮想開発環境', value: 'Vagrant を用いた仮想開発環境を構築' },
+          { label: 'サーバ構成', value: 'Apache / PHP / MariaDB (phpMyAdmin)' },
+          { label: '開発対象', value: 'WordPress のローカル開発' },
+          { label: 'フロントエンド', value: 'npm によるパッケージ管理' },
+          { label: 'タスクランナー', value: 'gulp（コンパイル監視、ビルド自動化）' },
+          { label: 'CSS設計', value: 'Bootstrap・BEMクラス設計' },
+          { label: 'ソースコード管理', value: 'Bitbucket・GitHub（@haller19）' },
+        ].map(row => (
+          <div class="stack-row">
+            <span class="stack-label">{row.label}</span>
+            <span class="stack-value">{row.value}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Qualification -->
+    <section class="qual-section">
+      <h2 class="sub-title">資格・専門性</h2>
+      <div class="qual-card">
+        <div class="qual-badge">上級ウェブ解析士<br><small>Senior Web Analytics Consultant (SWAC)</small></div>
+        <div class="qual-body">
+          <h3 class="qual-title">上級ウェブ解析士</h3>
+          <p class="qual-desc">
+            アクセス解析を起点に、KPI設計・改善提案を行い、Webサイトを事業成果につなげる運用支援に携わってきました。
+          </p>
+          <p class="qual-num">解析士番号: WAC11210181</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+.page-wrap { padding: 64px 0 96px; }
+.page-header { margin-bottom: 56px; max-width: 600px; }
+.page-title { font-size: 36px; font-weight: 500; margin: 8px 0 16px; letter-spacing: -.02em; }
+.page-desc { font-size: 15px; color: var(--c-ink-60); line-height: 1.75; }
+
+.skill-categories { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 64px; }
+.skill-cat {
+  background: var(--c-white);
+  border: 1px solid #E8E7E2;
+  border-radius: var(--radius-lg);
+  padding: 28px;
+}
+.skill-cat__head { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.skill-cat__icon { font-size: 22px; }
+.skill-cat__name { font-size: 16px; font-weight: 500; }
+.skill-items { display: flex; flex-direction: column; gap: 16px; }
+.skill-item { border-bottom: 1px solid #F0EFE9; padding-bottom: 14px; }
+.skill-item:last-child { border-bottom: none; padding-bottom: 0; }
+.skill-item__top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.skill-item__name { font-size: 14px; font-weight: 500; }
+.skill-item__dots { display: flex; gap: 4px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #E0EFE9; }
+.dot--on { background: var(--c-teal); }
+.skill-item__note { font-size: 12px; color: var(--c-ink-60); line-height: 1.5; }
+
+.sub-title { font-size: 22px; font-weight: 500; margin-bottom: 20px; }
+.tech-stack { margin-bottom: 56px; }
+.stack-table {
+  border: 1px solid #E8E7E2;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--c-white);
+}
+.stack-row {
+  display: flex;
+  padding: 14px 24px;
+  border-bottom: 1px solid #F0EFE9;
+  gap: 24px;
+  align-items: baseline;
+}
+.stack-row:last-child { border-bottom: none; }
+.stack-label { font-size: 13px; font-weight: 500; color: var(--c-teal-dk); min-width: 160px; font-family: var(--font-mono); }
+.stack-value { font-size: 14px; color: var(--c-ink); }
+
+.qual-section { }
+.qual-card { display: flex; gap: 28px; align-items: flex-start; }
+.qual-badge {
+  background: var(--c-teal);
+  color: var(--c-white);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  min-width: 200px;
+  text-align: center;
+}
+.qual-badge small { font-size: 11px; opacity: .8; }
+.qual-title { font-size: 18px; font-weight: 500; margin-bottom: 8px; }
+.qual-desc { font-size: 14px; color: var(--c-ink-60); line-height: 1.7; margin-bottom: 8px; }
+.qual-num { font-size: 12px; color: var(--c-ink-30); font-family: var(--font-mono); }
+
+@media (max-width: 768px) {
+  .skill-categories { grid-template-columns: 1fr; }
+  .qual-card { flex-direction: column; }
+  .qual-badge { min-width: unset; width: 100%; }
+}
+</style>

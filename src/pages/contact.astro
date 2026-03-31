@@ -1,0 +1,212 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Contact — ZiPZAP" description="ZiPZAPへのお問い合わせ。Web制作・リニューアル・SEO・WordPress運用改善のご相談はこちらから。">
+  <div class="container page-wrap">
+    <header class="page-header">
+      <p class="section-label">Contact</p>
+      <h1 class="page-title">お問い合わせ</h1>
+      <p class="page-desc">
+        Web制作・リニューアル・SEO・WordPress運用改善など、お気軽にご相談ください。<br>
+        ヒアリングから丁寧に対応します。2営業日以内にご返信いたします。
+      </p>
+    </header>
+
+    <div class="contact-grid">
+      <!-- Form -->
+      <div class="form-wrap">
+        <form class="contact-form" id="contactForm" novalidate>
+          <div class="field">
+            <label class="label" for="name">お名前 <span class="req">*</span></label>
+            <input class="input" type="text" id="name" name="name" placeholder="例：山田 太郎" required />
+          </div>
+          <div class="field">
+            <label class="label" for="company">会社名・屋号</label>
+            <input class="input" type="text" id="company" name="company" placeholder="例：株式会社〇〇" />
+          </div>
+          <div class="field">
+            <label class="label" for="email">メールアドレス <span class="req">*</span></label>
+            <input class="input" type="email" id="email" name="email" placeholder="example@email.com" required />
+          </div>
+          <div class="field">
+            <label class="label" for="subject">ご相談の種類</label>
+            <select class="input" id="subject" name="subject">
+              <option value="">選択してください</option>
+              <option>Webサイト制作・リニューアル</option>
+              <option>WordPress構築・カスタマイズ</option>
+              <option>SEO・Webマーケティング支援</option>
+              <option>運用改善・分析サポート</option>
+              <option>その他</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="label" for="message">ご相談内容 <span class="req">*</span></label>
+            <textarea class="input textarea" id="message" name="message" rows="6" placeholder="ご相談の概要・現状の課題・ご予算感などをご記入ください" required></textarea>
+          </div>
+
+          <div class="form-note">
+            ※ このフォームはデモ用です。実際の送信機能はVercelにデプロイ後、Netlify FormsやResendなどと連携して実装できます。
+          </div>
+
+          <button type="submit" class="btn btn--primary submit-btn" id="submitBtn">
+            送信する →
+          </button>
+        </form>
+
+        <div class="success-msg" id="successMsg" style="display:none">
+          <div class="success-icon">✓</div>
+          <h3>送信完了しました！</h3>
+          <p>お問い合わせありがとうございます。2営業日以内にご返信いたします。</p>
+        </div>
+      </div>
+
+      <!-- Sidebar info -->
+      <aside class="contact-info">
+        <div class="info-block">
+          <h3 class="info-title">よくあるご相談</h3>
+          <ul class="info-list">
+            {[
+              'Webサイトをリニューアルしたい',
+              'WordPressで自社更新できるようにしたい',
+              'SEOで検索からの集客を増やしたい',
+              'アクセス解析・改善サポートをしてほしい',
+              'LP（ランディングページ）を作りたい',
+              'ブライダル・農業・運送業界の実績あり',
+            ].map(item => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="info-block info-block--teal">
+          <h3 class="info-title">得意なこと</h3>
+          <div class="tag-cloud">
+            {['WordPress', 'SEO', 'アクセス解析', 'KPI設計', 'コンテンツ設計', '運用改善', 'UI改善', 'フルリニューアル'].map(t => (
+              <span class="tag">{t}</span>
+            ))}
+          </div>
+        </div>
+
+        <div class="coconala-note">
+          <p class="coconala-label">ココナラでも活動中</p>
+          <p class="coconala-handle">WordPress大好き人間</p>
+          <p class="coconala-desc">ご要望に応じてプロジェクト単位でも対応可能です。</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const form = document.getElementById('contactForm') as HTMLFormElement;
+  const success = document.getElementById('successMsg') as HTMLElement;
+  const btn = document.getElementById('submitBtn') as HTMLButtonElement;
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    btn.textContent = '送信中...';
+    btn.disabled = true;
+    setTimeout(() => {
+      form.style.display = 'none';
+      success.style.display = 'flex';
+    }, 800);
+  });
+</script>
+
+<style>
+.page-wrap { padding: 64px 0 96px; }
+.page-header { margin-bottom: 56px; max-width: 600px; }
+.page-title { font-size: 36px; font-weight: 500; margin: 8px 0 16px; letter-spacing: -.02em; }
+.page-desc { font-size: 15px; color: var(--c-ink-60); line-height: 1.75; }
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 56px;
+  align-items: start;
+}
+
+/* Form */
+.form-wrap {
+  background: var(--c-white);
+  border: 1px solid #E8E7E2;
+  border-radius: var(--radius-lg);
+  padding: 36px;
+}
+.contact-form { display: flex; flex-direction: column; gap: 20px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.label { font-size: 14px; font-weight: 500; color: var(--c-ink); }
+.req { color: var(--c-teal); }
+.input {
+  padding: 10px 14px;
+  border: 1px solid #D4D3CE;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--c-ink);
+  background: var(--c-surface);
+  transition: border-color var(--transition);
+  appearance: none;
+}
+.input:focus { outline: none; border-color: var(--c-teal); background: var(--c-white); }
+.textarea { resize: vertical; min-height: 140px; line-height: 1.6; }
+.form-note { font-size: 12px; color: var(--c-ink-30); line-height: 1.6; }
+.submit-btn { align-self: flex-start; padding: 12px 32px; font-size: 15px; }
+
+.success-msg {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 48px 24px;
+  gap: 12px;
+}
+.success-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--c-teal-lt);
+  color: var(--c-teal-dk);
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+.success-msg h3 { font-size: 20px; font-weight: 500; }
+.success-msg p { font-size: 14px; color: var(--c-ink-60); }
+
+/* Sidebar */
+.contact-info { display: flex; flex-direction: column; gap: 20px; }
+.info-block {
+  background: var(--c-white);
+  border: 1px solid #E8E7E2;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+}
+.info-block--teal { background: var(--c-teal-lt); border-color: transparent; }
+.info-title { font-size: 14px; font-weight: 500; color: var(--c-ink); margin-bottom: 14px; }
+.info-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.info-list li {
+  font-size: 13px;
+  color: var(--c-ink);
+  padding-left: 14px;
+  position: relative;
+  line-height: 1.5;
+}
+.info-list li::before { content: '▸'; position: absolute; left: 0; color: var(--c-teal); }
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.coconala-note {
+  background: var(--c-ink);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+}
+.coconala-label { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--c-teal); font-family: var(--font-mono); margin-bottom: 6px; }
+.coconala-handle { font-size: 18px; font-weight: 500; color: var(--c-white); margin-bottom: 6px; }
+.coconala-desc { font-size: 12px; color: rgba(255,255,255,.5); line-height: 1.5; }
+
+@media (max-width: 768px) {
+  .contact-grid { grid-template-columns: 1fr; }
+  .form-wrap { padding: 24px; }
+}
+</style>

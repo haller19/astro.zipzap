@@ -1,0 +1,127 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { works } from '../data/works.js';
+---
+<Layout title="Works — ZiPZAP" description="ZiPZAPの制作実績一覧。WordPress・SEO・Webディレクションの実績をご紹介します。">
+  <div class="container page-wrap">
+    <header class="page-header">
+      <p class="section-label">Works</p>
+      <h1 class="page-title">制作実績</h1>
+      <p class="page-desc">
+        リニューアル・新規制作・SEO・運用改善など、さまざまな業種・業態でのWeb支援実績です。
+      </p>
+    </header>
+
+    <div class="works-list">
+      {works.map((work) => (
+        <article class="work-item" id={work.id}>
+          <div class="work-item__header">
+            <div>
+              <div class="work-item__tags">
+                {work.tags.map(tag => <span class="tag">{tag}</span>)}
+              </div>
+              <h2 class="work-item__title">{work.title}</h2>
+              <p class="work-item__meta">{work.industry} · {work.period}</p>
+            </div>
+          </div>
+
+          <div class="work-item__body">
+            <div class="work-item__left">
+              <div class="work-block">
+                <h3 class="work-block__label">概要</h3>
+                <p class="work-block__text">{work.summary}</p>
+              </div>
+              <div class="work-block">
+                <h3 class="work-block__label">役割</h3>
+                <p class="work-block__text">{work.role}</p>
+              </div>
+              {work.budget && (
+                <div class="work-block">
+                  <h3 class="work-block__label">予算規模</h3>
+                  <p class="work-block__text">{work.budget}</p>
+                </div>
+              )}
+              <div class="work-block">
+                <h3 class="work-block__label">チーム構成</h3>
+                <p class="work-block__text">{work.teamSize}</p>
+              </div>
+              <div class="work-block">
+                <h3 class="work-block__label">使用ツール</h3>
+                <p class="work-block__text work-block__text--mono">{work.tools}</p>
+              </div>
+            </div>
+            <div class="work-item__right">
+              <div class="work-block">
+                <h3 class="work-block__label">成果・ハイライト</h3>
+                <ul class="highlights">
+                  {work.highlights.map(h => <li>{h}</li>)}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</Layout>
+
+<style>
+.page-wrap { padding: 64px 0 96px; }
+.page-header { margin-bottom: 56px; max-width: 600px; }
+.page-title { font-size: 36px; font-weight: 500; margin: 8px 0 16px; letter-spacing: -.02em; }
+.page-desc { font-size: 15px; color: var(--c-ink-60); line-height: 1.75; }
+
+.works-list { display: flex; flex-direction: column; gap: 32px; }
+
+.work-item {
+  background: var(--c-white);
+  border: 1px solid #E8E7E2;
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  scroll-margin-top: 80px;
+  transition: border-color var(--transition);
+}
+.work-item:hover { border-color: var(--c-teal); }
+
+.work-item__header { margin-bottom: 24px; }
+.work-item__tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.work-item__title { font-size: 22px; font-weight: 500; color: var(--c-ink); }
+.work-item__meta { font-size: 13px; color: var(--c-teal); font-family: var(--font-mono); margin-top: 6px; }
+
+.work-item__body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  border-top: 1px solid #F0EFE9;
+  padding-top: 24px;
+}
+.work-item__left, .work-item__right { display: flex; flex-direction: column; gap: 20px; }
+
+.work-block__label {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--c-teal);
+  font-family: var(--font-mono);
+  margin-bottom: 6px;
+}
+.work-block__text { font-size: 14px; color: var(--c-ink); line-height: 1.65; }
+.work-block__text--mono { font-family: var(--font-mono); font-size: 12px; color: var(--c-ink-60); }
+
+.highlights { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.highlights li {
+  font-size: 14px;
+  color: var(--c-ink);
+  padding: 10px 14px;
+  background: var(--c-teal-lt);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--c-teal);
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .work-item__body { grid-template-columns: 1fr; gap: 24px; }
+  .work-item { padding: 24px; }
+}
+</style>
